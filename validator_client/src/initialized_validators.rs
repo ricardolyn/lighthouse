@@ -1050,6 +1050,12 @@ impl InitializedValidators {
                         }
                     }
                     SigningDefinition::Web3Signer(Web3SignerDefinition { .. }) => {
+                        let pubkey_bytes = def.voting_public_key.compress();
+
+                        if self.validators.contains_key(&pubkey_bytes) {
+                            continue;
+                        }
+
                         match InitializedValidator::from_definition(
                             def.clone(),
                             &mut key_cache,
